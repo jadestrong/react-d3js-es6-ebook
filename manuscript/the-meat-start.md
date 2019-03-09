@@ -166,7 +166,7 @@ Equipped with an `axis` generator, we `select` the `svg` element, append a group
 
 It creates a small axis:
 
-![Simple axis](images/es6v2/simple-axis.png)
+![Simple axis](resources/images/es6v2/simple-axis.png)
 
 You can play around with this example on CodePen [here](https://codepen.io/swizec/pen/YGoYBM). Try changing the scale type.
 
@@ -367,7 +367,7 @@ We create a grouping element to fulfill React's one child per component requirem
 
 After inserting into the DOM with `ReactDOM`, we get a series of 20 colorful rectangles.
 
-![20 color swatches](images/es6v2/color-swatches.png)
+![20 color swatches](resources/images/es6v2/color-swatches.png)
 
 Try changing the `width="400"` property of `<Colors />`. You'll see D3's `scaleBand` and our update wiring ensure the color strip renders correctly. For more fun, try changing the `Colors` component so it takes the color scale as a prop, then rendering multiple instances of `<Colors />` side-by-side.
 
@@ -383,9 +383,9 @@ The rest of this book is about using these concepts and pushing them to the limi
 
 Throughout the example, you'll learn more details of D3, tidbits from React, and the animation chapter is going to blow your mind. It's gonna be fun!
 
-![Default view](images/es6v2/full-dataviz.png)
+![Default view](resources/images/es6v2/full-dataviz.png)
 
-![After a click](images/es6v2/interaction-dataviz.png)
+![After a click](resources/images/es6v2/interaction-dataviz.png)
 
 # State Handling Architecture
 
@@ -399,7 +399,7 @@ Let's save you from that.
 
 ## Basic architecture
 
-![The basic architecture](images/es6v2/architecture.jpg)
+![The basic architecture](resources/images/es6v2/architecture.jpg)
 
 We're going to use a unidirectional dataflow architecture inspired by Flux:
 
@@ -413,7 +413,7 @@ This looks roundabout, but it's awesome. It's far better than worrying about par
 
 When a user clicks on one of our controls, a `Toggle`, it invokes a callback. This in turn invokes a callback on `ControlRow`, which invokes a callback on `Controls`, which invokes a callback on `App`.
 
-![Callback chain](images/es6v2/architecture_callbacks.jpg)
+![Callback chain](resources/images/es6v2/architecture_callbacks.jpg)
 
 With each hop, the nature of our callback changes. `Toggle`  tells `ControlRow` which entry was toggled, `ControlRow` tells `Controls` how to update the data filter function, and `Controls` gives `App` a composite filter built from all the controls. You'll see how that works in the next chapter.
 
@@ -421,7 +421,7 @@ The important takeaway right now is that callbacks go from low-level info to hig
 
 When the final callback is invoked, `App` updates its repository of truth and communicates the change back down the chain via props. This happens with no additional wiring on your part.
 
-![Data flows down](images/es6v2/architecture_dataflow.jpg)
+![Data flows down](resources/images/es6v2/architecture_dataflow.jpg)
 
 You can think of it like calling functions with new arguments. Because the functions – components – render the UI, your interface updates.
 
