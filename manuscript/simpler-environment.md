@@ -1,4 +1,3 @@
-{#getting-started}
 # Set up a local environment with create-react-app
 
 Can you believe this is the third time I'm writing a *"How to set up all the tools and get started"* section? The ecosystem moves fast! 
@@ -27,7 +26,6 @@ Great, you have node and you're ready to go.
 
 Run this command in a terminal:
 
-{caption: "Install create-react-app"}
 ```
 $ npm install -g create-react-app
 ```
@@ -46,7 +44,6 @@ Superb! You have `create-react-app`. Time to create an app and get started with 
 
 Run this in a terminal:
 
-{caption: "Create your project", line-numbers: false}
 ```
 $ create-react-app react-d3js-example
 ```
@@ -55,7 +52,6 @@ Congratulations! You just created a React app. *With* all the setup and the fuss
 
 Your next step is to run your app:
 
-{caption: "Start your dev server"}
 ```
 $ cd react-d3js-example
 $ npm start
@@ -63,7 +59,7 @@ $ npm start
 
 A browser tab should open with a page that looks like this:
 
-![Initial React app](images/es6v2/initial-app.png)
+![Initial React app](resources/images/es6v2/initial-app.png)
 
 If that didn't work, then something must have gone terribly wrong. You should consult [the official docs](https://github.com/facebookincubator/create-react-app). Maybe that will help.
 
@@ -101,14 +97,12 @@ There are a couple of libraries we're going to use often in this book: D3, Topoj
 
 You can install them like this:
 
-{caption: "Install dependencies", line-numbers: false}
 ```
 $ npm install --save d3 topojson lodash
 ```
 
 Additionally, we're using Bootstrap for default styling and String for string manipulation. You should install them as well.
 
-{caption: "Styling and string manipulation", line-numbers: false}
 ```
 $ npm install --save bootstrap string
 ```
