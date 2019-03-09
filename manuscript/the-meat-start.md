@@ -1,6 +1,3 @@
-{mainmatter}
-
-{#the-meat-start}
 # Visualizing data with React and d3.js #
 
 Welcome to the main part of React + D3v4. We're going to talk a little theory, learn some principles, and then get our hands dirty with a few examples. Through this book you're going to build:
@@ -39,12 +36,10 @@ This section is split into five chapters:
 - [State Handling Architecture](#state-handling-architecture)
 - [Structuring your React App](#structuring-your-app)
 
-{#basic-approach}
 # The basic approach
 
 Our visualizations are going to use SVG - an XML-based image format that lets us describe images in terms of mathematical shapes. For example, the source code of an 800x600 SVG image with a rectangle looks like this:
 
-{caption: "SVG rectangle", line-numbers: false}
 ```html
 <svg width="800" height="600">
     <rect width="100" height="200" x="50" y="20" />
@@ -63,8 +58,7 @@ Another nice feature of SVG is that it's just a dialect of XML - nested elements
 
 That makes React's rendering engine particularly suited for SVG. Our 100x200 rectangle from before looks like this as a React component:
 
-{caption: "A simple rectangle in React", line-numbers: false, format: javascript}
-```
+```js
 const Rectangle = () => (
     <rect width="100" height="200" x="50" y="20" />
 );
@@ -72,8 +66,7 @@ const Rectangle = () => (
 
 To use this rectangle component in a picture, you'd use a component like this:
 
-{caption: "Rect component in a picture", line-numbers: false, format: javascript}
-```
+```js
 const Picture = () => (
     <svg width="800" height="600">
 	<Rectangle />
@@ -85,8 +78,7 @@ You're right. This looks like tons of work for a static rectangle. But look clos
 
 Compare that to a pure D3 approach:
 
-{caption: "A static rectangle in d3.js", line-numbers: false, format: javascript}
-```
+```js
 d3.select("svg")
   .attr("width", 800)
   .attr("height", 600)
@@ -103,8 +95,7 @@ You have to take your time and read the code carefully: first, we `select` the `
 
 Those 8 lines of code create HTML that looks like this:
 
-{caption: "HTML of a rectangle", line-numbers: false, format: javascript}
-```
+```html
 <svg width="800" height="600">
     <rect width="100" height="200" x="50" y="20" />
 </svg>
@@ -127,7 +118,6 @@ This way, we can leverage React for SVG structure and rendering optimizations an
 
 Now let's look at two different ways to put them together: blackbox and full-feature.
 
-{#blackbox-components}
 # Blackbox Components
 
 Blackbox components are the simplest way to integrate D3 and React. You can think of them as wrappers around D3 visualizations.
@@ -146,7 +136,6 @@ You have to manually re-render on props and state changes. You're also throwing 
 
 Manual re-rendering is not as annoying as it sounds, but the inefficiency can get pretty bad with complex visualizations. Use this technique sparingly.
 
-{#blackbox-axis}
 ## A quick blackbox example - a D3 axis
 
 Let's build an axis component. Axes are the perfect use-case for blackbox components. D3 comes with an axis generator bundled inside, and they're difficult to build from scratch.
@@ -155,8 +144,7 @@ They don't *look* difficult, but there are many tiny details you have to get _ju
 
 D3's axis generator takes a scale and some configuration to render an axis for us. The code looks like this:
 
-{caption: "A pure D3 axis",line-numbers: false, format: javascript}
-```
+```js
 const scale = d3.scaleLinear()
 		.domain([0, 10])
 		.range([0, 200]);
@@ -186,8 +174,7 @@ You can play around with this example on CodePen [here](https://codepen.io/swize
 
 Now let's say we want to use that same axis code but as a React component. The simplest way is to use a blackbox component approach like this:
 
-{caption: "React blackbox axis", line-numbers: false, format: javascript}
-```
+```js
 class Axis extends Component {
 	componentDidMount() { this.renderAxis() }
 	componentDidUpdate() { this.renderAxis() }
@@ -224,7 +211,6 @@ That wasn't so bad, was it? You can try it out on CodePen [here](https://codepen
 
 To make our axis more useful, we could get the scale and axis orientation from props. We'll do that for scales in our bigger project.
 
-{#blackbox-hoc}
 # A D3 blackbox higher order component – HOC
 
 After the blackbox axis example above, you'd be right to think something like *"Dude, that looks like it's gonna get hella repetitive. Do I really have to do all that every time?"*
@@ -244,8 +230,7 @@ Let's build a HOC for D3 blackbox integration. We'll use it in the main example 
 
 A `D3blackbox` HOC looks like this:
 
-{caption: "React blackbox HOC", line-numbers: false, format: javascript}
-```
+```javascript
 function D3blackbox(D3render) {
 	return class Blackbox extends React.Component {
 		componentDidMount() { D3render.call(this); }
@@ -268,9 +253,7 @@ We've also made some changes to make `render` more flexible. Instead of hardcodi
 Consult the [ES6 cheatsheet](https://es6cheatsheet.com/) for details on that.
 
 Using our new `D3blackbox` HOC to make an axis looks like this:
-
-{caption: "React blackbox HOC", line-numbers: false, format: javascript}
-```
+```javascript
 const Axis = D3blackbox(function () {
     const scale = d3.scaleLinear()
 	            .domain([0, 10])
@@ -281,14 +264,12 @@ const Axis = D3blackbox(function () {
       .call(axis);    
 });
 ```
-
 It’s the same code as we had in `renderAxis` before. The only difference is that the function is wrapped in a `D3blackbox` call. This turns it into a React component.
 
 I'm not 100% whether wrapping a function in a React component counts as a real HOC, but let's roll with it. More proper HOCs are React components wrapped in components.
 
 You can play with this example on Codepen [here](https://codepen.io/swizec/pen/woNjVw).
 
-{#full-feature-integration}
 # Full-feature Integration
 
 As useful as blackbox components are, we need something better if we want to leverage React's rendering engine. We're going to look at full-feature integration where React does the rendering and D3 calculates the props.
@@ -310,7 +291,6 @@ I suggest following along in Codepen for now. [Here's one I set up for you](http
 
 We start with a `Swatch` component that draws a rectangle and fills it with a color.
 
-{caption: "Swatch component", line-numbers: false, format: javascript}
 ```
 const Swatch = ({ color, width, x }) => (
 	<rect width={width}
@@ -327,8 +307,7 @@ Note that `style` is a dictionary, so we specify it with double curly braces: ou
 
 Then we need a `Colors` component. It follows the full-featured integration structure: D3 objects as properties, an `updateD3` function, plus some wiring for updates and rendering.
 
-{caption: "Colors component, pt1", line-numbers: false, format: javascript}
-```
+```js
 class Colors extends Component {
     colors = d3.schemeCategory20;
     width = d3.scaleBand()
@@ -347,8 +326,7 @@ We'll use `this.width` to calculate widths and positions of our color swatches. 
 
 Unlike the domain, our range is dynamic so that we can use props to define the width of our color scale. This makes the component more reusable.
 
-{caption: "Colors component, pt2", line-numbers: false, format: javascript}
-```
+```js
 componentWillMount() {
     this.updateD3(this.props);
 }
@@ -360,6 +338,7 @@ componentWillUpdate(newProps) {
 updateD3(props) {
     this.width.range([0, props.width]);
 }
+
 ```
 
 `componentWillMount` and `componentWillUpdate` are component lifecycle hooks. Can you guess when they run?
@@ -370,8 +349,7 @@ Both of them call our `updateD3` method with the new value of props. We use it t
 
 Finally, we render a set of color swatches.
 
-{caption: "Colors component, pt3", line-numbers: false, format: javascript}
-```
+```js
 render() {
 	return (
 		<g>
@@ -409,7 +387,6 @@ Throughout the example, you'll learn more details of D3, tidbits from React, and
 
 ![After a click](images/es6v2/interaction-dataviz.png)
 
-{#state-handling-architecture}
 # State Handling Architecture
 
 Before I can set you loose on the world, we should talk about managing state. It's where most engineers shoot themselves in the foot.
@@ -420,7 +397,6 @@ The Rewrite [killed Netscape](http://www.joelonsoftware.com/articles/fog00000000
 
 Let's save you from that.
 
-{#basic-architecture}
 ## Basic architecture
 
 ![The basic architecture](images/es6v2/architecture.jpg)
@@ -464,7 +440,6 @@ We're using the basic approach because it's easier to explain, works without add
 You can see an approach to using Redux in dataviz in the [Animating with React, Redux, and D3 chapter](#animating-react-redux), and we'll tackle MobX in the [MobX chapter](#refactoring-to-mobx).
 
 
-{#structuring-your-app}
 # Structuring your React app
 
 We're going to structure our app into components. Deciding what to put into one component and what to put into another is one of the hardest problems in engineering.
